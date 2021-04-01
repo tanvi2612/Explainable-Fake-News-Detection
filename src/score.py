@@ -7,14 +7,15 @@ from transformers import TFBertForSequenceClassification, BertTokenizer
 from sklearn.model_selection import train_test_split
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
-model = TFBertForSequenceClassification.from_pretrained('../model/finetuned2')
+model = TFBertForSequenceClassification.from_pretrained('../model/finetuned4')
 
 df = pd.read_csv('../data/test.csv')
 
 x = list(df.Text)[:300]
 y=df.Fake[:300]
 
-for cutoff in [0.6, 0.65, 0.7, 0.75, 0.8]:
+for cutoff in [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75]:
+    print(f"Cutoff : {cutoff}")
     y_out = []
 
     for inp in x:
