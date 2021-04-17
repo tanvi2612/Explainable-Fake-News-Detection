@@ -68,7 +68,7 @@ def run1(text):
                 maxv = 0
                 maxi = -1
                 for i in range(len(ind)-1):
-                    v = sum(b[ind[i]:ind[i+1]+1])/(ind[i+1]-ind[i])
+                    v = sum(b[ind[i]+1:ind[i+1]+1])/(ind[i+1]-ind[i])
                     if v > maxv:
                         maxv = v
                         maxi = i
@@ -165,7 +165,7 @@ class PromptOut(BaseModel):
 
 # Helper function
 def process_text(text):
-    output = run1(text)
+    output = run2(text)
     out = {
         "label": output[1],
         "exp": output[0]
