@@ -1,6 +1,6 @@
 # Steps to run extention
 - Go to the detectr directory
-- Download the model from the given Gdrive link(at the same directory as the app.py file)
+- Download the model from the given Gdrive link "https://drive.google.com/file/d/1Yn3l_quOMV-ncLYzVU06WZ3372VvE10Y/view?usp=sharing" (at the same directory as the app.py file)
 - Install the required packages
 ## Creating Extension For Chrome
 
@@ -135,13 +135,20 @@ This json includes all the meta information of the news articles collected using
  - `images` is a list of the URLs of all the images in the news article web page. 
  - `publish date`  indicate the date that news article is published.
 
-**Creating Data for Training**
 
 # Pretraining on Common Crawl
+- extract common crawl data:  aws s3 cp s3://commoncrawl/crawl-data/CC-NEWS/2021/03/CC-NEWS-20210305051940-00557.warc.gz . --no-sign-request
+- To extract all the zip files python3 -m warcat extract ../cc-eng/CC-NEWS-20210305082016-00559.warc.gz
+- To store only the English language data  python3 save_files.py > listfiles4.txt 
+- Finally to extract data and store in articles.txt python3 extract_text.py
+- python3 run_mlm.py --model_name_or_path bert-base-cased --train_file ./articles.txt --line_by_line --do_train --output_dir ./out --per_device_train_batch_size 1
+- make sure that articles and run_mlm.py are in same folder 
+- run_mlm.py can be downloaded from https://github.com/huggingface/transformers/blob/master/examples/language-modeling/
 
 # Finetuning pretrained model
 - Take the pretrained model(obtained from the previous step) and the dataset extracted previously
 - Install required dependencies
+- Create a csv file through the directory structure having label as 0 (fake) and 1 (real).
 - Run train1.py in the src directory(set location of pretrained model and data as you wish)
 - The code will return a few models. To find the best run score1.py to get the best cutoffs and model.
 - Run the extension again using the above steps for better results.
